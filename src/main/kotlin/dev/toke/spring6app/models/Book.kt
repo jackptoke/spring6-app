@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToMany
 data class Book(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long,
+        val id: Long?,
         val title: String,
         val isbn: String,
         @ManyToMany(mappedBy = "books")
@@ -18,5 +18,15 @@ data class Book(
 ) {
         override fun toString(): String {
                 return "Book - ($id): $title ISBN: $isbn"
+        }
+
+        override fun equals(other: Any?): Boolean {
+                if(this === other) return true
+                if(other !is Book) return  false
+                return other.id.let { id == other.id }
+        }
+
+        override fun hashCode(): Int {
+                return id.let { id.hashCode() }
         }
 }
